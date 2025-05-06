@@ -47,7 +47,7 @@ public class PacketSender : MonoBehaviour
     {
         try
         {
-            using System.Net.NetworkInformation.Ping ping = new System.Net.NetworkInformation.Ping();
+            System.Net.NetworkInformation.Ping ping = new System.Net.NetworkInformation.Ping();
             PingReply reply = ping.Send(host, 1000); // Timeout set to 1000ms
             return reply.Status == IPStatus.Success;
         }
