@@ -456,6 +456,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TestMacAddress: 54:BF:64:5F:63:57
+  IPadress: www.google.com
 --- !u!1 &546428775
 GameObject:
   m_ObjectHideFlags: 0
