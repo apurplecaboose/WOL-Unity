@@ -10,7 +10,6 @@ using UnityEngine.Events;
 public class PacketSender : MonoBehaviour
 {
     public string TestMacAddress;
-    public UnityEvent TESTEVENT;
     public void SendMagicPacket(string macAddress, string broadcastAddress = "255.255.255.255", int port = 9)
     {
         byte[] macBytes = ParseMacAddress(macAddress);
