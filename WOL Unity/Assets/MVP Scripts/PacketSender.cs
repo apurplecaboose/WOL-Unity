@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Sockets;
 using UnityEngine.TextCore.Text;
 using UnityEngine.Events;
+using System.Net.NetworkInformation;
 
 public class PacketSender : MonoBehaviour
 {
@@ -41,6 +42,19 @@ public class PacketSender : MonoBehaviour
             macBytes[i] = Convert.ToByte(macParts[i], 16);
         }
         return macBytes;
+    }
+    public static bool PingHost(string host)
+    {
+        try
+        {
+            using System.Net.NetworkInformation.Ping ping = new System.Net.NetworkInformation.Ping();
+            PingReply reply = ping.Send(host, 1000); // Timeout set to 1000ms
+            return reply.Status == IPStatus.Success;
+        }
+        catch
+        {
+            return false; // Handle exceptions (e.g., invalid host or network issues)
+        }
     }
     void Start()
     {
