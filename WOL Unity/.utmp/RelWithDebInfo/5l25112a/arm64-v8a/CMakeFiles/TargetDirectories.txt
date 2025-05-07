@@ -1,0 +1,5 @@
+C:/Users/DubaDu/Documents/GitHub/WOL-Unity/WOL Unity/.utmp/RelWithDebInfo/5l25112a/arm64-v8a/CMakeFiles/edit_cache.dir
+C:/Users/DubaDu/Documents/GitHub/WOL-Unity/WOL Unity/.utmp/RelWithDebInfo/5l25112a/arm64-v8a/CMakeFiles/rebuild_cache.dir
+C:/Users/DubaDu/Documents/GitHub/WOL-Unity/WOL Unity/.utmp/RelWithDebInfo/5l25112a/arm64-v8a/FramePacing/CMakeFiles/swappywrapper.dir
+C:/Users/DubaDu/Documents/GitHub/WOL-Unity/WOL Unity/.utmp/RelWithDebInfo/5l25112a/arm64-v8a/FramePacing/CMakeFiles/edit_cache.dir
+C:/Users/DubaDu/Documents/GitHub/WOL-Unity/WOL Unity/.utmp/RelWithDebInfo/5l25112a/arm64-v8a/FramePacing/CMakeFiles/rebuild_cache.dir

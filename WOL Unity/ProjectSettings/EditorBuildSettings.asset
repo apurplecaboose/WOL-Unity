@@ -6,6 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/WebcamStream.unity
-    guid: c5508e3746acedc48aa224109085ecba
+    path: Assets/Scenes/WebcamStreamMobile.unity
+    guid: 764df6483078a364fa1e78afdcd28b81
   m_configObjects: {}
+  m_UseUCBPForAssetBundles: 0
