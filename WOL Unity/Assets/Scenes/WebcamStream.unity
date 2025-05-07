@@ -880,7 +880,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _rawImage: {fileID: 997361956}
   _Dropdown: {fileID: 230625664}
-  _NullImage: {fileID: 2800000, guid: 7dd875cbe1570c64f96ac2739c3a7341, type: 3}
+  _NullImage: {fileID: 2800000, guid: df975d53bee15004d8363853286f936c, type: 3}
   Toggle: {fileID: 178645884}
 --- !u!1 &640577535
 GameObject:
@@ -1287,7 +1287,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 2800000, guid: 7dd875cbe1570c64f96ac2739c3a7341, type: 3}
+  m_Texture: {fileID: 2800000, guid: df975d53bee15004d8363853286f936c, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
