@@ -5,18 +5,18 @@ using UnityEngine.UI;
 
 public class WEBCAM : MonoBehaviour
 {
-    [SerializeField]TMP_Text fpscounter;
-    [SerializeField] RawImage _rawImage; // Serialized RawImage instance
+    [SerializeField]TMP_Text _FPScounter;
+    [SerializeField] RawImage _rawImage;
     [SerializeField] TMP_Dropdown _Dropdown;
-    [SerializeField] Texture _NullImage; // Fallback image when webcam fails
-    private WebCamTexture _webcamTexture;
-    private List<string> _deviceNames = new List<string>();
+    [SerializeField] Texture _NullImage;
+    WebCamTexture _webcamTexture;
+    List<string> _deviceNames = new();
     public GameObject Toggle;
-    private float deltaTime = 0.0f;
+    float _deltaTime = 0.0f;
     void Awake()
     {
         QualitySettings.vSyncCount = 0;
-        Application.targetFrameRate = 120; // Set to desired FPS
+        Application.targetFrameRate = 120;
     }
 
     void Start()
@@ -33,7 +33,7 @@ public class WEBCAM : MonoBehaviour
             _rawImage.texture = _NullImage;
         }
 
-        // Listen for dropdown value changes
+        // Listen for dropdown value change events
         _Dropdown.onValueChanged.AddListener(ChangeCamera);
     }
     private void Update()
@@ -42,9 +42,9 @@ public class WEBCAM : MonoBehaviour
         {
             Toggle.SetActive(!Toggle.activeSelf);
         }
-        deltaTime += (Time.deltaTime - deltaTime) * 0.1f;
-        float fps = 1.0f / deltaTime;
-        fpscounter.text = $"FPS: {Mathf.Ceil(fps)}"; // Display FPS value
+        _deltaTime += (Time.deltaTime - _deltaTime) * 0.1f;
+        float fps = 1.0f / _deltaTime;
+        _FPScounter.text = $"FPS: {Mathf.Ceil(fps)}";
     }
     void ChangeCamera(int index)
     {
@@ -73,7 +73,6 @@ public class WEBCAM : MonoBehaviour
             _Dropdown.AddOptions(_deviceNames);
         }
     }
-
 
     public void QuitApp()
     {
