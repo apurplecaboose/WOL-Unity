@@ -18,6 +18,7 @@ public class JSON_Saver : MonoBehaviour
         // Write JSON data to a file
         File.WriteAllText(JSONFilePath.Path, json);
 
+        Debug.Log("Saved JSON file at: " + Application.persistentDataPath);
         Debug.Log("Data saved successfully!");
     }
 }
