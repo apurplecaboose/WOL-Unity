@@ -3,11 +3,12 @@ using UnityEngine;
 
 public class JSON_Saver : MonoBehaviour
 {
+    //[SerializeField] bool WakeOnStart = false;
     [SerializeField] string _mac;
 
-    [SerializeField] bool _advOptions;
-    [SerializeField] string _pingip;
-    [SerializeField] string[] _sitestoload;
+    //[SerializeField] bool _advOptions;
+    //[SerializeField] string _pingip;
+    //[SerializeField] string[] _sitestoload;
     public void SaveToJSON()
     {
         DeviceData data = new();

@@ -2,6 +2,7 @@ using System;
 [Serializable]
 public class DeviceData
 {
+    public bool WakeOnStart = false;
     public string MAC;
     public string BroadcastAddress = "255.255.255.255";
     public int BroadcastPort = 9;

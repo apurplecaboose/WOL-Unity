@@ -50,9 +50,17 @@ public class PacketSender : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Failed to parse JSON data!");
+            Debug.LogError("JSON data null... loading Settings Scene");
             SceneManager.LoadScene(1);
         }
+        if(data.WakeOnStart)
+        {
+            SendMagicPacket();
+        }
+    }
+    public void LoadSettingsScene(int index)
+    {
+        SceneManager.LoadScene(index);
     }
     public void SendMagicPacket()
     {
@@ -139,6 +147,5 @@ public class PacketSender : MonoBehaviour
         }
         #endregion
     }
-   
 }
 
