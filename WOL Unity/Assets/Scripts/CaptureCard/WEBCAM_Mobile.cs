@@ -11,7 +11,6 @@ public class WEBCAM_Mobile : MonoBehaviour
     WebCamTexture _webcamTexture;
     List<string> _deviceNames = new();
     public GameObject Toggle;
-    float _deltaTime = 0.0f;
     void Awake()
     {
         QualitySettings.vSyncCount = 0;
@@ -20,7 +19,6 @@ public class WEBCAM_Mobile : MonoBehaviour
 
     void Start()
     {
-        //Screen.orientation = ScreenOrientation.LandscapeRight; // or LandscapeRight
         RefreshWebcamDevices();
 
         if (_deviceNames.Count > 0)
