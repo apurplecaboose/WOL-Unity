@@ -23,6 +23,13 @@ public class JSON_Saver : MonoBehaviour
         Debug.Log("Saved JSON file at: " + UnityEngine.Application.persistentDataPath);
         Debug.Log("Data saved successfully!");
     }
+    public static void InitializeJSON()
+    {
+        DeviceData data = new();
+        string json = JsonUtility.ToJson (data, true); ;
+        File.WriteAllText (JSONFilePath.Path, json);
+        Debug.Log("JSON Initialized");
+    }
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Alpha7)) SaveToJSON();

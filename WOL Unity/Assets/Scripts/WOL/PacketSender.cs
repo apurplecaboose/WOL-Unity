@@ -10,28 +10,45 @@ using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 public class PacketSender : MonoBehaviour
 {
-    [SerializeField] string _mac;
+    [SerializeField] bool _ExecuteWakeOnStart;
+    [SerializeField] string _MAC;
     [SerializeField] string _BroadcastAddress;
     [SerializeField] int _BroadcastPort;
-    [SerializeField] bool _pingip_thenLoadSites;
-    [SerializeField] string _pingip;
-    [SerializeField] string[] _sitestoload;
+    [SerializeField] bool _LaunchSitesAfterWake;
+    [SerializeField] bool _QuitApplicationAfterWake;
+    [SerializeField] string _Ping_IP;
+    [SerializeField] string[] _SitesToLoad;
 
     void Awake()
     {
         if (File.Exists(JSONFilePath.Path))
         {
             LoadFromJSON();
-            print("LOADED FROM JSON");
+            Debug.Log("LOADED FROM JSON");
         }
         else
         {
-            Debug.LogWarning("No save file found! Loading Scene 1...");
-            // create save file in path - load scene feedback - prompt user to restart
+            Debug.LogWarning("No JSON, Initializing");
+            InitializeJSON();
             SceneManager.LoadScene(1);
         }
     }
-
+    #region JSON
+    public void SaveToJSON()
+    {
+        DeviceData data = new();
+        //data.MAC = _mac;
+        string json = JsonUtility.ToJson(data, true);
+        File.WriteAllText(JSONFilePath.Path, json);
+        Debug.Log("Data saved successfully!" + "Saved JSON file at: " + UnityEngine.Application.persistentDataPath);
+    }
+    void InitializeJSON()
+    {
+        DeviceData data = new();
+        string json = JsonUtility.ToJson(data, true); ;
+        File.WriteAllText(JSONFilePath.Path, json);
+        Debug.Log("JSON Initialized");
+    }
     void LoadFromJSON()
     {
         string json = File.ReadAllText(JSONFilePath.Path);
@@ -39,33 +56,31 @@ public class PacketSender : MonoBehaviour
 
         if (data != null)
         {
-            _mac = data.MAC;
+            _ExecuteWakeOnStart = data.ExecuteWakeOnStart;
+            _MAC = data.MAC;
             _BroadcastAddress = data.BroadcastAddress;
             _BroadcastPort = data.BroadcastPort;
-
-            _pingip_thenLoadSites = data.ADVANCEDOPTIONS;
-            _pingip = data.Ping_IP;
-            _sitestoload = data.SitesToLoad;
-
+            _LaunchSitesAfterWake = data.LaunchSitesAfterWake;
+            _QuitApplicationAfterWake = data.QuitApplicationAfterWake;
+            _Ping_IP = data.Ping_IP;
+            _SitesToLoad = data.SitesToLoad;
             Debug.Log("Data loaded successfully!");
         }
         else
         {
-            Debug.LogError("JSON data null... loading Settings Scene");
+            Debug.LogWarning("No JSON / JSON load error, reInitializing");
+            InitializeJSON();
             SceneManager.LoadScene(1);
         }
-        if (data.WakeOnStart)
-        {
-            SendMagicPacket();
-        }
     }
+    #endregion
     public void LoadSettingsScene(int index)
     {
         SceneManager.LoadScene(index);
     }
     public void SendMagicPacket()
     {
-        byte[] macBytes = ParseMacAddress(_mac);
+        byte[] macBytes = ParseMacAddress(_MAC);
 
         // Create the magic packet
         byte[] packet = new byte[102];
@@ -80,13 +95,13 @@ public class PacketSender : MonoBehaviour
             udpClient.Send(packet, packet.Length, endpoint);
         }
         Debug.Log("sent magic packet");
-        if (_pingip_thenLoadSites)
+        if (_LaunchSitesAfterWake)
         {
             CheckServerStatusandOpenSites();
         }
         else
         {
-            Application.Quit();
+            FinishedTasks();
             return;
         }
         #region subfunctions
@@ -114,7 +129,7 @@ public class PacketSender : MonoBehaviour
                 Debug.LogError("No response from server timeout");
                 return;
             }
-            serveronlinestatus = SimplePing(_pingip, delay);
+            serveronlinestatus = SimplePing(_Ping_IP, delay);
             _servercheckcounter += 1;
             await Task.Delay(delay + 5);
         }
@@ -133,20 +148,29 @@ public class PacketSender : MonoBehaviour
 
         void LaunchSitesToLoad()
         {
-            if (_sitestoload == null)
+            if (_SitesToLoad == null)
             {
-                Application.Quit();
+                FinishedTasks();
                 return;
             }
-            foreach (string site in _sitestoload)
+            foreach (string site in _SitesToLoad)
             {
                 Application.OpenURL(site);
             }
-            Application.Quit();
+            FinishedTasks();
             return;
-
         }
         #endregion
     }
+    void FinishedTasks()
+    {
+        if(_QuitApplicationAfterWake)
+        {
+            Application.Quit();
+        }
+        else
+        {
+            SceneManager.LoadScene(0);
+        }
+    }
 }
-
