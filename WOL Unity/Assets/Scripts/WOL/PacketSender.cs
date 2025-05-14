@@ -8,8 +8,12 @@ using System.Net;
 using System.Net.Sockets;
 using System.Net.NetworkInformation;
 using System.Threading.Tasks;
+using TMPro;
 public class PacketSender : MonoBehaviour
 {
+    [Header("References")]
+    [SerializeField] TMP_InputField _PathInputField;
+    [Header("Debug Varibles")]
     [SerializeField] bool _ExecuteWakeOnStart;
     [SerializeField] string _MAC;
     [SerializeField] string _BroadcastAddress;
@@ -30,54 +34,47 @@ public class PacketSender : MonoBehaviour
         {
             Debug.LogWarning("No JSON, Initializing");
             InitializeJSON();
-            SceneManager.LoadScene(1);
         }
     }
-    #region JSON
-    public void SaveToJSON()
+    void Start()
     {
-        DeviceData data = new();
-        //data.MAC = _mac;
-        string json = JsonUtility.ToJson(data, true);
-        File.WriteAllText(JSONFilePath.Path, json);
-        Debug.Log("Data saved successfully!" + "Saved JSON file at: " + UnityEngine.Application.persistentDataPath);
+        if (_ExecuteWakeOnStart) SendMagicPacket();
+        _PathInputField.text = JSONFilePath.Path;
     }
+    #region JSON
     void InitializeJSON()
     {
-        DeviceData data = new();
-        string json = JsonUtility.ToJson(data, true); ;
+        WOL_ConfigSettings config = new();
+        string json = JsonUtility.ToJson(config, true); ;
         File.WriteAllText(JSONFilePath.Path, json);
         Debug.Log("JSON Initialized");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        Debug.Log("Reloading Scene");
     }
     void LoadFromJSON()
     {
         string json = File.ReadAllText(JSONFilePath.Path);
-        DeviceData data = JsonUtility.FromJson<DeviceData>(json);
+        WOL_ConfigSettings configuration = JsonUtility.FromJson<WOL_ConfigSettings>(json);
 
-        if (data != null)
+        if (configuration != null)
         {
-            _ExecuteWakeOnStart = data.ExecuteWakeOnStart;
-            _MAC = data.MAC;
-            _BroadcastAddress = data.BroadcastAddress;
-            _BroadcastPort = data.BroadcastPort;
-            _LaunchSitesAfterWake = data.LaunchSitesAfterWake;
-            _QuitApplicationAfterWake = data.QuitApplicationAfterWake;
-            _Ping_IP = data.Ping_IP;
-            _SitesToLoad = data.SitesToLoad;
+            _ExecuteWakeOnStart = configuration.ExecuteWakeOnStart;
+            _MAC = configuration.MAC;
+            _BroadcastAddress = configuration.BroadcastAddress;
+            _BroadcastPort = configuration.BroadcastPort;
+            _LaunchSitesAfterWake = configuration.LaunchSitesAfterWake;
+            _QuitApplicationAfterWake = configuration.QuitApplicationAfterWake;
+            _Ping_IP = configuration.Ping_IP;
+            _SitesToLoad = configuration.SitesToLoad;
             Debug.Log("Data loaded successfully!");
         }
         else
         {
             Debug.LogWarning("No JSON / JSON load error, reInitializing");
             InitializeJSON();
-            SceneManager.LoadScene(1);
         }
     }
     #endregion
-    public void LoadSettingsScene(int index)
-    {
-        SceneManager.LoadScene(index);
-    }
     public void SendMagicPacket()
     {
         byte[] macBytes = ParseMacAddress(_MAC);
@@ -170,7 +167,7 @@ public class PacketSender : MonoBehaviour
         }
         else
         {
-            SceneManager.LoadScene(0);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }
 }
