@@ -27,6 +27,7 @@ public class PacketSender : MonoBehaviour
         else
         {
             Debug.LogWarning("No save file found! Loading Scene 1...");
+            // create save file in path - load scene feedback - prompt user to restart
             SceneManager.LoadScene(1);
         }
     }
