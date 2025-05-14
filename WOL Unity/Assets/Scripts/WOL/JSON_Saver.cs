@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
@@ -12,13 +14,17 @@ public class JSON_Saver : MonoBehaviour
     public void SaveToJSON()
     {
         DeviceData data = new();
-        data.MAC = _mac;
+        //data.MAC = _mac;
         // Convert the object to JSON
         string json = JsonUtility.ToJson(data, true);
         // Write JSON data to a file
         File.WriteAllText(JSONFilePath.Path, json);
 
-        Debug.Log("Saved JSON file at: " + Application.persistentDataPath);
+        Debug.Log("Saved JSON file at: " + UnityEngine.Application.persistentDataPath);
         Debug.Log("Data saved successfully!");
+    }
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha7)) SaveToJSON();
     }
 }

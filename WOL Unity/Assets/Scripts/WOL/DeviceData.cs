@@ -3,7 +3,7 @@ using System;
 public class DeviceData
 {
     public bool WakeOnStart = false;
-    public string MAC;
+    public string MAC = "FF:FF:FF:FF:FF:FF";//
     public string BroadcastAddress = "255.255.255.255";
     public int BroadcastPort = 9;
     public bool ADVANCEDOPTIONS = false;

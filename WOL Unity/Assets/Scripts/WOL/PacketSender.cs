@@ -11,18 +11,18 @@ using System.Threading.Tasks;
 public class PacketSender : MonoBehaviour
 {
     [SerializeField] string _mac;
-    string _BroadcastAddress = "255.255.255.255";
-    int _BroadcastPort = 9;
-    [SerializeField] bool _advOptions;
+    [SerializeField] string _BroadcastAddress;
+    [SerializeField] int _BroadcastPort;
+    [SerializeField] bool _pingip_thenLoadSites;
     [SerializeField] string _pingip;
     [SerializeField] string[] _sitestoload;
 
     void Awake()
     {
-
         if (File.Exists(JSONFilePath.Path))
         {
             LoadFromJSON();
+            print("LOADED FROM JSON");
         }
         else
         {
@@ -42,7 +42,7 @@ public class PacketSender : MonoBehaviour
             _BroadcastAddress = data.BroadcastAddress;
             _BroadcastPort = data.BroadcastPort;
 
-            _advOptions = data.ADVANCEDOPTIONS;
+            _pingip_thenLoadSites = data.ADVANCEDOPTIONS;
             _pingip = data.Ping_IP;
             _sitestoload = data.SitesToLoad;
 
@@ -53,7 +53,7 @@ public class PacketSender : MonoBehaviour
             Debug.LogError("JSON data null... loading Settings Scene");
             SceneManager.LoadScene(1);
         }
-        if(data.WakeOnStart)
+        if (data.WakeOnStart)
         {
             SendMagicPacket();
         }
@@ -79,7 +79,7 @@ public class PacketSender : MonoBehaviour
             udpClient.Send(packet, packet.Length, endpoint);
         }
         Debug.Log("sent magic packet");
-        if(_advOptions)
+        if (_pingip_thenLoadSites)
         {
             CheckServerStatusandOpenSites();
         }
@@ -108,7 +108,7 @@ public class PacketSender : MonoBehaviour
         bool serveronlinestatus = false;
         do
         {
-            if(_servercheckcounter >= 20)
+            if (_servercheckcounter >= 20)
             {
                 Debug.LogError("No response from server timeout");
                 return;
