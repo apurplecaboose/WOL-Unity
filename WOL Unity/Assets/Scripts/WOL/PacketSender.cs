@@ -14,21 +14,20 @@ public class PacketSender : MonoBehaviour
     [Header("References")]
     [SerializeField] TMP_InputField _PathInputField;
     [Header("Debug Varibles")]
-    [SerializeField] bool _ExecuteWakeOnStart;
-    [SerializeField] string _MAC;
-    [SerializeField] string _BroadcastAddress;
-    [SerializeField] int _BroadcastPort;
-    [SerializeField] bool _LaunchSitesAfterWake;
-    [SerializeField] bool _QuitApplicationAfterWake;
-    [SerializeField] string _Ping_IP;
-    [SerializeField] string[] _SitesToLoad;
+    /*[SerializeField]*/ bool _ExecuteWakeOnStart;
+    /*[SerializeField]*/ string _MAC;
+    /*[SerializeField]*/ string _BroadcastAddress;
+    /*[SerializeField]*/ int _BroadcastPort;
+    /*[SerializeField]*/ bool _LaunchSitesAfterWake;
+    /*[SerializeField]*/ bool _QuitApplicationAfterWake;
+    /*[SerializeField]*/ string _Ping_IP;
+    /*[SerializeField]*/ string[] _SitesToLoad;
 
     void Awake()
     {
         if (File.Exists(JSONFilePath.Path))
         {
             LoadFromJSON();
-            Debug.Log("LOADED FROM JSON");
         }
         else
         {
@@ -58,6 +57,11 @@ public class PacketSender : MonoBehaviour
             InitializeJSON();
         }
 
+    }
+    public void ResetScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        Debug.Log("Scenereset");
     }
     public void QuitApplication()
     {
@@ -156,6 +160,7 @@ public class PacketSender : MonoBehaviour
             await Task.Delay(delay + 5);
         }
         while (!serveronlinestatus);
+        Debug.Log("Server Ping Response Sucess!!! Server is online");
         LaunchSitesToLoad();
         return;
 
@@ -178,6 +183,7 @@ public class PacketSender : MonoBehaviour
             foreach (string site in _SitesToLoad)
             {
                 Application.OpenURL(site);
+                Debug.Log("Sites opened");
             }
             FinishedTasks();
             return;
