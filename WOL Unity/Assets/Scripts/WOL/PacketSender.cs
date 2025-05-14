@@ -41,6 +41,30 @@ public class PacketSender : MonoBehaviour
         if (_ExecuteWakeOnStart) SendMagicPacket();
         _PathInputField.text = JSONFilePath.Path;
     }
+    #region Other Buttons
+    public void CopyPath()
+    {
+        GUIUtility.systemCopyBuffer = JSONFilePath.Path;
+        Debug.Log("Copied Path to clipboard");
+    }
+    public void OpenFile()
+    {
+        try
+        {
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(JSONFilePath.Path) { UseShellExecute = true });
+        }
+        catch (Exception ex)
+        {
+            InitializeJSON();
+        }
+
+    }
+    public void QuitApplication()
+    {
+        Application.Quit();
+        Debug.Log("Application Quit");
+    }
+    #endregion
     #region JSON
     void InitializeJSON()
     {
@@ -75,6 +99,7 @@ public class PacketSender : MonoBehaviour
         }
     }
     #endregion
+    #region WOL and ping
     public void SendMagicPacket()
     {
         byte[] macBytes = ParseMacAddress(_MAC);
@@ -164,10 +189,12 @@ public class PacketSender : MonoBehaviour
         if(_QuitApplicationAfterWake)
         {
             Application.Quit();
+            Debug.Log("Application Quit");
         }
         else
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }
+    #endregion
 }
