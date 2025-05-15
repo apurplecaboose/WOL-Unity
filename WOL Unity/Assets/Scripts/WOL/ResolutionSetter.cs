@@ -3,10 +3,12 @@ using System.IO;
 
 public class ResolutionSetter : MonoBehaviour
 {
+    PacketSender _Pcksender;
     private static ResolutionSetter instance;
     WOL_ConfigSettings _ConfigSettings;
     void Awake()
     {
+        _Pcksender = Camera.main.GetComponent<PacketSender>();
         EnsureSingleton();
         string json = File.ReadAllText(JSONFilePath.Path);
         _ConfigSettings = JsonUtility.FromJson<WOL_ConfigSettings>(json);
@@ -26,7 +28,7 @@ public class ResolutionSetter : MonoBehaviour
     }
     void Start()
     {
-        if (_ConfigSettings.ExecuteWakeOnStart) PacketSender.SendMagicPacket();
+        if (_ConfigSettings.ExecuteWakeOnStart) _Pcksender.SendMagicPacket();
     }
     void EnsureSingleton()
     {

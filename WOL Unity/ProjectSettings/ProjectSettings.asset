@@ -720,10 +720,10 @@ PlayerSettings:
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend:
-    Standalone: 0
+    Standalone: 1
   il2cppCompilerConfiguration: {}
   il2cppCodeGeneration:
-    Standalone: 1
+    Standalone: 0
   il2cppStacktraceInformation: {}
   managedStrippingLevel:
     Android: 3

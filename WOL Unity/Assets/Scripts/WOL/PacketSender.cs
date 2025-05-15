@@ -9,16 +9,18 @@ using System.Net.Sockets;
 using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using TMPro;
+using System.Threading;
 public class PacketSender : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] TMP_InputField _PathInputField;
-    private static WOL_ConfigSettings _ConfigSettings;
+    [SerializeField] GameObject _LoadingScreen;
+    private WOL_ConfigSettings _ConfigSettings;
     void Awake()
     {
-         QualitySettings.vSyncCount = 0;
+        QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = 30;
-        _ConfigSettings = new ();
+        _ConfigSettings = new();
         if (File.Exists(JSONFilePath.Path))
         {
             LoadFromJSON();
@@ -30,6 +32,10 @@ public class PacketSender : MonoBehaviour
             InitializeJSON(true);
         }
     }
+    void Start()
+    {
+        _canceltoken = new();
+    }
     #region Other Buttons
     public void CopyPath()
     {
@@ -38,14 +44,22 @@ public class PacketSender : MonoBehaviour
     }
     public void OpenConfigFile()
     {
-        try
+        if (File.Exists(JSONFilePath.Path))
         {
+#if ENABLE_MONO
             System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(JSONFilePath.Path) { UseShellExecute = true });
+#else
+            Application.OpenURL(JSONFilePath.Path);
+#endif
         }
-        catch
+        else
         {
             InitializeJSON(false);
+#if ENABLE_MONO
             System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(JSONFilePath.Path) { UseShellExecute = true });
+#else
+            Application.OpenURL(JSONFilePath.Path);
+#endif
         }
     }
     public void DeleteConfigFile()
@@ -58,6 +72,7 @@ public class PacketSender : MonoBehaviour
     }
     public void ResetScene()
     {
+        _canceltoken.Cancel();//cancels all current async tasks
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         Debug.Log("Scenereset");
     }
@@ -66,7 +81,7 @@ public class PacketSender : MonoBehaviour
         Application.Quit();
         Debug.Log("Application Quit");
     }
-    #endregion
+#endregion
     #region JSON
     void InitializeJSON(bool reloadscene)
     {
@@ -74,7 +89,7 @@ public class PacketSender : MonoBehaviour
         string json = JsonUtility.ToJson(config, true); ;
         File.WriteAllText(JSONFilePath.Path, json);
         Debug.Log("JSON Initialized");
-        if(!reloadscene) return;
+        if (!reloadscene) return;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         Debug.Log("Reloading Scene");
     }
@@ -94,8 +109,9 @@ public class PacketSender : MonoBehaviour
     }
     #endregion
     #region WOL and ping
-    public static void SendMagicPacket()
+    public void SendMagicPacket()
     {
+        _LoadingScreen.SetActive(true);
         byte[] macBytes = ParseMacAddress(_ConfigSettings.MAC);
 
         // Create the magic packet
@@ -133,34 +149,43 @@ public class PacketSender : MonoBehaviour
         }
         #endregion
     }
-    private static int _servercheckcounter = 0;
-    private static async void CheckServerStatusandOpenSites()
+    int _servercheckcounter = 0;
+    CancellationTokenSource _canceltoken;
+    async void CheckServerStatusandOpenSites()
     {
-        int delay = 500;
+        int delay = 1000;
         bool serveronlinestatus = false;
         do
         {
             if (_servercheckcounter >= 20)
             {
+                _LoadingScreen.SetActive(false);
                 Debug.LogError("No response from server timeout");
+                return;
+            }
+            if (_canceltoken.Token.IsCancellationRequested)
+            {
+                Debug.LogWarning("Threading Task cancelled.");
                 return;
             }
             serveronlinestatus = SimplePing(_ConfigSettings.Ping_IP, delay);
             _servercheckcounter += 1;
-            await Task.Delay(delay + 5);
+            await Task.Delay(delay + 5, _canceltoken.Token);
         }
         while (!serveronlinestatus);
         Debug.Log("Server Ping Response Sucess!!! Server is online");
+        //_LoadingScreen.SetActive(false);
         LaunchSitesToLoad();
         return;
 
         #region Subfunctions
         bool SimplePing(string host, int timeout)
         {
-            System.Net.NetworkInformation.Ping newsimpleping = new System.Net.NetworkInformation.Ping();
-            PingReply reply = newsimpleping.Send(host, timeout);
-            if (reply.Status == IPStatus.Success) return true;
-            else return false;
+            using (System.Net.NetworkInformation.Ping newsimpleping = new System.Net.NetworkInformation.Ping())
+            {
+                PingReply reply = newsimpleping.Send(host, timeout);
+                return reply.Status == IPStatus.Success; // will return 1 or true if match else false
+            }
         }
 
         void LaunchSitesToLoad()
@@ -180,9 +205,10 @@ public class PacketSender : MonoBehaviour
         }
         #endregion
     }
-    private static void FinishedTasks()
+    void FinishedTasks()
     {
-        if(_ConfigSettings.QuitApplicationAfterWake)
+        _LoadingScreen.SetActive(false);
+        if (_ConfigSettings.QuitApplicationAfterWake)
         {
             Application.Quit();
             Debug.Log("Application Quit");
