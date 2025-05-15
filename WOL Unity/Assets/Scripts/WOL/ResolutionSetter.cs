@@ -24,6 +24,10 @@ public class ResolutionSetter : MonoBehaviour
             SetAppHalfResolution();
         }
     }
+    void Start()
+    {
+        if (_ConfigSettings.ExecuteWakeOnStart) PacketSender.SendMagicPacket();
+    }
     void EnsureSingleton()
     {
         if (instance == null)

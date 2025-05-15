@@ -13,7 +13,7 @@ public class PacketSender : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] TMP_InputField _PathInputField;
-    WOL_ConfigSettings _ConfigSettings;
+    private static WOL_ConfigSettings _ConfigSettings;
     void Awake()
     {
          QualitySettings.vSyncCount = 0;
@@ -22,17 +22,13 @@ public class PacketSender : MonoBehaviour
         if (File.Exists(JSONFilePath.Path))
         {
             LoadFromJSON();
+            _PathInputField.text = JSONFilePath.Path;
         }
         else
         {
             Debug.LogWarning("No JSON, Initializing");
             InitializeJSON(true);
         }
-    }
-    void Start()
-    {
-        if (_ConfigSettings.ExecuteWakeOnStart) SendMagicPacket();
-        _PathInputField.text = JSONFilePath.Path;
     }
     #region Other Buttons
     public void CopyPath()
@@ -98,7 +94,7 @@ public class PacketSender : MonoBehaviour
     }
     #endregion
     #region WOL and ping
-    public void SendMagicPacket()
+    public static void SendMagicPacket()
     {
         byte[] macBytes = ParseMacAddress(_ConfigSettings.MAC);
 
@@ -137,8 +133,8 @@ public class PacketSender : MonoBehaviour
         }
         #endregion
     }
-    int _servercheckcounter = 0;
-    async void CheckServerStatusandOpenSites()
+    private static int _servercheckcounter = 0;
+    private static async void CheckServerStatusandOpenSites()
     {
         int delay = 500;
         bool serveronlinestatus = false;
@@ -184,7 +180,7 @@ public class PacketSender : MonoBehaviour
         }
         #endregion
     }
-    void FinishedTasks()
+    private static void FinishedTasks()
     {
         if(_ConfigSettings.QuitApplicationAfterWake)
         {
