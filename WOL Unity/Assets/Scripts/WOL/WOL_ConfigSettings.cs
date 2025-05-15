@@ -13,7 +13,7 @@ public class WOL_ConfigSettings
     public bool LaunchSitesAfterWake = false;
     public bool QuitApplicationAfterWake = false;
     public string Ping_IP = "192.168.1.1";
-    public string[] SitesToLoad = { "https://duckduckgo.com/", "http://192.168.1.1" };
+    public string[] SitesToLoad = { "https://turniptoss.itch.io/wake-on-lan-wol-gui", "https://github.com/apurplecaboose/WOL-Unity", "http://192.168.1.1" };
 }
 
 public class JSONFilePath
