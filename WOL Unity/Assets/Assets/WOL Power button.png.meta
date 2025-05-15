@@ -1,10 +1,13 @@
 fileFormatVersion: 2
-guid: c7897d52e2a1184469f8a28dc8053883
+guid: 24d6fa03b1c57c048a5d7dd45baa909e
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6194166604575692290
-    second: file icon_0
+      213: 1490719131236283527
+    second: wake on lan icon_0
+  - first:
+      213: -2764556185369685835
+    second: wake on lan icon_1
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,14 +49,14 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spriteGenerateFallbackPhysicsShape: 1
+  spriteGenerateFallbackPhysicsShape: 0
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -72,7 +75,7 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 256
+    maxTextureSize: 512
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
@@ -126,13 +129,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: file icon_0
+      name: wake on lan icon_0
       rect:
         serializedVersion: 2
-        x: 77
-        y: 22
-        width: 378
-        height: 467
+        x: 56
+        y: 82
+        width: 418
+        height: 403
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +144,30 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ef9adae8a46e90aa0800000000000000
-      internalID: -6194166604575692290
+      spriteID: 784b735d62910b410800000000000000
+      internalID: 1490719131236283527
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wake on lan icon_1
+      rect:
+        serializedVersion: 2
+        x: 215
+        y: 16
+        width: 98
+        height: 332
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5b05e61fbc252a9d0800000000000000
+      internalID: -2764556185369685835
       vertices: []
       indices: 
       edges: []
@@ -151,7 +176,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -161,7 +186,8 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      file icon_0: -6194166604575692290
+      wake on lan icon_0: 1490719131236283527
+      wake on lan icon_1: -2764556185369685835
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

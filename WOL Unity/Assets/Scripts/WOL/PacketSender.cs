@@ -1,9 +1,9 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using System.Collections;
-using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Net.NetworkInformation;
@@ -13,18 +13,12 @@ public class PacketSender : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] TMP_InputField _PathInputField;
-    [Header("Debug Varibles")]
-    /*[SerializeField]*/ bool _ExecuteWakeOnStart;
-    /*[SerializeField]*/ string _MAC;
-    /*[SerializeField]*/ string _BroadcastAddress;
-    /*[SerializeField]*/ int _BroadcastPort;
-    /*[SerializeField]*/ bool _LaunchSitesAfterWake;
-    /*[SerializeField]*/ bool _QuitApplicationAfterWake;
-    /*[SerializeField]*/ string _Ping_IP;
-    /*[SerializeField]*/ string[] _SitesToLoad;
-
+    WOL_ConfigSettings _ConfigSettings;
     void Awake()
     {
+         QualitySettings.vSyncCount = 0;
+        Application.targetFrameRate = 30;
+        _ConfigSettings = new ();
         if (File.Exists(JSONFilePath.Path))
         {
             LoadFromJSON();
@@ -32,12 +26,12 @@ public class PacketSender : MonoBehaviour
         else
         {
             Debug.LogWarning("No JSON, Initializing");
-            InitializeJSON();
+            InitializeJSON(true);
         }
     }
     void Start()
     {
-        if (_ExecuteWakeOnStart) SendMagicPacket();
+        if (_ConfigSettings.ExecuteWakeOnStart) SendMagicPacket();
         _PathInputField.text = JSONFilePath.Path;
     }
     #region Other Buttons
@@ -46,17 +40,25 @@ public class PacketSender : MonoBehaviour
         GUIUtility.systemCopyBuffer = JSONFilePath.Path;
         Debug.Log("Copied Path to clipboard");
     }
-    public void OpenFile()
+    public void OpenConfigFile()
     {
         try
         {
             System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(JSONFilePath.Path) { UseShellExecute = true });
         }
-        catch (Exception ex)
+        catch
         {
-            InitializeJSON();
+            InitializeJSON(false);
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(JSONFilePath.Path) { UseShellExecute = true });
         }
-
+    }
+    public void DeleteConfigFile()
+    {
+        if (File.Exists(JSONFilePath.Path))
+        {
+            File.Delete(JSONFilePath.Path);
+            Debug.Log("Config File Deleted");
+        }
     }
     public void ResetScene()
     {
@@ -70,43 +72,35 @@ public class PacketSender : MonoBehaviour
     }
     #endregion
     #region JSON
-    void InitializeJSON()
+    void InitializeJSON(bool reloadscene)
     {
         WOL_ConfigSettings config = new();
         string json = JsonUtility.ToJson(config, true); ;
         File.WriteAllText(JSONFilePath.Path, json);
         Debug.Log("JSON Initialized");
+        if(!reloadscene) return;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         Debug.Log("Reloading Scene");
     }
     void LoadFromJSON()
     {
         string json = File.ReadAllText(JSONFilePath.Path);
-        WOL_ConfigSettings configuration = JsonUtility.FromJson<WOL_ConfigSettings>(json);
-
-        if (configuration != null)
+        _ConfigSettings = JsonUtility.FromJson<WOL_ConfigSettings>(json);
+        if (_ConfigSettings != null)
         {
-            _ExecuteWakeOnStart = configuration.ExecuteWakeOnStart;
-            _MAC = configuration.MAC;
-            _BroadcastAddress = configuration.BroadcastAddress;
-            _BroadcastPort = configuration.BroadcastPort;
-            _LaunchSitesAfterWake = configuration.LaunchSitesAfterWake;
-            _QuitApplicationAfterWake = configuration.QuitApplicationAfterWake;
-            _Ping_IP = configuration.Ping_IP;
-            _SitesToLoad = configuration.SitesToLoad;
             Debug.Log("Data loaded successfully!");
         }
         else
         {
             Debug.LogWarning("No JSON / JSON load error, reInitializing");
-            InitializeJSON();
+            InitializeJSON(true);
         }
     }
     #endregion
     #region WOL and ping
     public void SendMagicPacket()
     {
-        byte[] macBytes = ParseMacAddress(_MAC);
+        byte[] macBytes = ParseMacAddress(_ConfigSettings.MAC);
 
         // Create the magic packet
         byte[] packet = new byte[102];
@@ -117,11 +111,11 @@ public class PacketSender : MonoBehaviour
         using (UdpClient udpClient = new UdpClient())
         {
             udpClient.EnableBroadcast = true;
-            IPEndPoint endpoint = new IPEndPoint(IPAddress.Parse(_BroadcastAddress), _BroadcastPort);
+            IPEndPoint endpoint = new IPEndPoint(IPAddress.Parse(_ConfigSettings.BroadcastAddress), _ConfigSettings.BroadcastPort);
             udpClient.Send(packet, packet.Length, endpoint);
         }
         Debug.Log("sent magic packet");
-        if (_LaunchSitesAfterWake)
+        if (_ConfigSettings.LaunchSitesAfterWake)
         {
             CheckServerStatusandOpenSites();
         }
@@ -155,7 +149,7 @@ public class PacketSender : MonoBehaviour
                 Debug.LogError("No response from server timeout");
                 return;
             }
-            serveronlinestatus = SimplePing(_Ping_IP, delay);
+            serveronlinestatus = SimplePing(_ConfigSettings.Ping_IP, delay);
             _servercheckcounter += 1;
             await Task.Delay(delay + 5);
         }
@@ -175,12 +169,12 @@ public class PacketSender : MonoBehaviour
 
         void LaunchSitesToLoad()
         {
-            if (_SitesToLoad == null)
+            if (_ConfigSettings.SitesToLoad == null)
             {
                 FinishedTasks();
                 return;
             }
-            foreach (string site in _SitesToLoad)
+            foreach (string site in _ConfigSettings.SitesToLoad)
             {
                 Application.OpenURL(site);
                 Debug.Log("Sites opened");
@@ -192,7 +186,7 @@ public class PacketSender : MonoBehaviour
     }
     void FinishedTasks()
     {
-        if(_QuitApplicationAfterWake)
+        if(_ConfigSettings.QuitApplicationAfterWake)
         {
             Application.Quit();
             Debug.Log("Application Quit");

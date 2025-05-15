@@ -6,7 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/WOL/WOL main.unity
+    path: Assets/Scenes/WOL main.unity
     guid: 9eff412e8453c4b4c8ca0a96efa038bb
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0
