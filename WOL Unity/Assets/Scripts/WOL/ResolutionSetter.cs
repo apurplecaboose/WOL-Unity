@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.IO;
+using System.Collections;
 
 public class ResolutionSetter : MonoBehaviour
 {
@@ -26,9 +27,19 @@ public class ResolutionSetter : MonoBehaviour
             SetAppHalfResolution();
         }
     }
-    void Start()
+    IEnumerator Start()
     {
-        if (_ConfigSettings.ExecuteWakeOnStart) _Pcksender.SendMagicPacket();
+        float startdelay = Mathf.Clamp(_ConfigSettings.WakeOnStartDelay, 0, _ConfigSettings.WakeOnStartDelay);
+        //waits 3 frames + start delay till start till execute
+        yield return null;
+        yield return null;
+        yield return null;
+        yield return new WaitForSeconds(startdelay);
+        if (_ConfigSettings.ExecuteWakeOnStart) WakeOnStart();
+    }
+    void WakeOnStart()
+    {
+        _Pcksender.SendMagicPacket();
     }
     void EnsureSingleton()
     {

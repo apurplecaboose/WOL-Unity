@@ -36,6 +36,20 @@ public class PacketSender : MonoBehaviour
     {
         _canceltoken = new();
     }
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Delete) || Input.GetKeyDown(KeyCode.F2))
+        {
+            _ConfigSettings.WakeOnStartDelay = 3;
+            _ConfigSettings.ExecuteWakeOnStart = false;
+            _ConfigSettings.LaunchSitesAfterWake = false;
+            _ConfigSettings.QuitApplicationAfterWake = false;
+            // Convert the object to JSON
+            string json = JsonUtility.ToJson(_ConfigSettings, true);
+            // Write JSON data to a file
+            File.WriteAllText(JSONFilePath.Path, json);
+        }
+}
     #region Other Buttons
     public void CopyPath()
     {
@@ -81,7 +95,7 @@ public class PacketSender : MonoBehaviour
         Application.Quit();
         Debug.Log("Application Quit");
     }
-#endregion
+    #endregion
     #region JSON
     void InitializeJSON(bool reloadscene)
     {
@@ -160,6 +174,7 @@ public class PacketSender : MonoBehaviour
             if (_servercheckcounter >= 20)
             {
                 _LoadingScreen.SetActive(false);
+                _canceltoken.Cancel();
                 Debug.LogError("No response from server timeout");
                 return;
             }

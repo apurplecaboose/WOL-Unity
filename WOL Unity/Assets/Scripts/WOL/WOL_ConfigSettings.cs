@@ -7,6 +7,7 @@ public class WOL_ConfigSettings
     public Vector2Int DefaultResolution = Vector2Int.zero;
 
     public bool ExecuteWakeOnStart = false;
+    public float WakeOnStartDelay = 3f;
     public string MAC = "FF:FF:FF:FF:FF:FF";
     public string BroadcastAddress = "255.255.255.255";
     public int BroadcastPort = 9;

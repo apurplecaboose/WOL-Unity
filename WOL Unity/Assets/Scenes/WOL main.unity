@@ -1611,6 +1611,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _PathInputField: {fileID: 976230301}
+  _LoadingScreen: {fileID: 1788392618}
 --- !u!1 &1181032391
 GameObject:
   m_ObjectHideFlags: 0
