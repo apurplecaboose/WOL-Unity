@@ -1,5 +1,4 @@
 <h1>Wake on Lan (WOL) GUI</h1>
-<h2>Description:</h2>
 <p>A graphical interface to send a Wake-on-Lan packet made in Unity.</p>
 <ul><li>Wake on Application Startup</li><li>Run as a startup app (Windows)</li><li>Ping's an IP address when there is response opens website(s)</li></ul>
 <h2>How to use:</h2>
@@ -25,6 +24,3 @@ C:/Users/&lt;USERNAME&gt;/AppData/LocalLow/TurnipTossProductions/WAKE (WOL-GUI)/
 <p>Press&nbsp;<strong>[F2] </strong>or<strong>&nbsp;[DELETE]</strong>&nbsp;to reset&nbsp; <strong><em>ExecuteWakeOnStart,</em>&nbsp;</strong><strong><em>WakeOnStartDelay, LaunchSitesAfterWake, QuitApplicationAfterWake</em> </strong>to default values<strong style="text-decoration-line: line-through;"></strong><strong style="text-decoration-line: line-through;"></strong></p>
 <p>This allows you to make changes to the JSON config file through GUI even if <strong><em>QuitApplicationAfterWake</em></strong> flag is enabled.</p>
 <p><br></p>
-Default Linux file path is:
-~/.config/unity3d/TurnipTossProductions/Wake on Lan (WOL) GUI/WOL_CONFIG_SETTINGS.json
-
