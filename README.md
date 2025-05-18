@@ -1,7 +1,7 @@
 <h1>Wake on Lan (WOL) GUI</h1>
 <p>A graphical interface to send a Wake-on-Lan packet made in Unity.</p>
 <ul><li>Wake on Application Startup</li><li>Run as a startup app (Windows)</li><li>Ping's an IP address when there is response opens website(s)</li></ul>
-<h2>Installation and How to use:</h2><p>To download checkout the&nbsp;<a href="https://github.com">Releases</a>
+<h2>Installation and How to use:</h2><p>To download checkout the&nbsp;<a href="https://github.com/apurplecaboose/WOL-Unity/releases">Releases</a>
  section of this repo.&nbsp;</p><p>To build from source download/clone the repo and open in Unity w/ version&nbsp;6000.0.48f1.</p><p></p>
 <p>All settings are stored in in an JSON file named:</p>
 <pre>
