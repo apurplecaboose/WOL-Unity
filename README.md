@@ -1,7 +1,7 @@
 <h1>Wake on Lan (WOL) GUI</h1>
 <p>A graphical interface to send a Wake-on-Lan packet made in Unity.</p>
 <ul><li>Wake on Application Startup</li><li>Run as a startup app (Windows)</li><li>Ping's an IP address when there is response opens website(s)</li></ul>
-<h2>How to use:</h2>
+<h2>Installation and How to use:</h2><p>To download checkout the&nbsp;[Release](https://github.com/RezaRafia/Speedy/releases) section of this repo.&nbsp;</p><p>To build from source download/clone the repo and open in Unity w/ version&nbsp;6000.0.48f1.</p><p></p>
 <p>All settings are stored in in an JSON file named:</p>
 <pre>
 WOL_CONFIG_SETTINGS.json</pre>
@@ -16,6 +16,7 @@ WOL_CONFIG_SETTINGS.json</pre>
 <ul><li><strong><em>MAC</em></strong>: must be in the format of FF:FF:FF:FF:FF:FF</li></ul>
 <ul><li><strong><em>BroadcastAddress</em></strong>:<strong>&nbsp;</strong>Recommended to not touch if you don't know what your are doing.&nbsp;<strong>(default: 255.255.255.255)</strong></li></ul>
 <ul><li><strong><em>BroadcastPort</em></strong>: Recommended to not touch if you don't know what your are doing.&nbsp;<strong>(default: 9)</strong></li><li><strong><em>LaunchSitesAfterWake</em></strong>: enables loading of websites when ping from device/server returns<strong>(default: false)</strong></li><li><strong><em>QuitApplicationAfterWake</em></strong>: Quits application after wake or sites loaded if&nbsp;&nbsp;<strong><em>LaunchSitesAfterWake </em></strong>is true&nbsp;<strong>(default: false)</strong></li><li><strong><em>Ping_IP</em></strong>: The usually local IP address of the device/server you are trying to turn on. When it returns a successful ping sites will be loaded.</li><li><strong><em>SitesToLoad</em></strong>: Array of websites to load after the ping of the server address is successful.&nbsp;<strong><em>LaunchSitesAfterWake</em> </strong>must be <strong>true&nbsp;</strong>and <strong><em>Ping_IP&nbsp;</em></strong>must be set.</li></ul>
+<p></p>
 <p><br></p>
 <h3>Advanced:</h3>
 <p>Default path on Windows is :</p>
@@ -23,4 +24,3 @@ WOL_CONFIG_SETTINGS.json</pre>
 C:/Users/&lt;USERNAME&gt;/AppData/LocalLow/TurnipTossProductions/WAKE (WOL-GUI)/WOL_CONFIG_SETTINGS.json</pre>
 <p>Press&nbsp;<strong>[F2] </strong>or<strong>&nbsp;[DELETE]</strong>&nbsp;to reset&nbsp; <strong><em>ExecuteWakeOnStart,</em>&nbsp;</strong><strong><em>WakeOnStartDelay, LaunchSitesAfterWake, QuitApplicationAfterWake</em> </strong>to default values<strong style="text-decoration-line: line-through;"></strong><strong style="text-decoration-line: line-through;"></strong></p>
 <p>This allows you to make changes to the JSON config file through GUI even if <strong><em>QuitApplicationAfterWake</em></strong> flag is enabled.</p>
-<p><br></p>
