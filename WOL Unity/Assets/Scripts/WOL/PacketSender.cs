@@ -36,6 +36,7 @@ public class PacketSender : MonoBehaviour
     {
         _canceltoken = new();
     }
+#if !PLATFORM_ANDROID
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Delete) || Input.GetKeyDown(KeyCode.F2))
@@ -50,6 +51,7 @@ public class PacketSender : MonoBehaviour
             File.WriteAllText(JSONFilePath.Path, json);
         }
 }
+#endif
     #region Other Buttons
     public void CopyPath()
     {

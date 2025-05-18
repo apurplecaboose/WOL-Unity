@@ -1,3 +1,4 @@
+#if !PLATFORM_ANDROID
 using UnityEngine;
 using System.IO;
 using System.Collections;
@@ -13,6 +14,7 @@ public class ResolutionSetter : MonoBehaviour
         EnsureSingleton();
         string json = File.ReadAllText(JSONFilePath.Path);
         _ConfigSettings = JsonUtility.FromJson<WOL_ConfigSettings>(json);
+
         if (_ConfigSettings.StartFullscreen)
         {
             Screen.fullScreen = true;
@@ -74,3 +76,4 @@ public class ResolutionSetter : MonoBehaviour
         Screen.SetResolution(targetWidth, targetHeight, false);
     }
 }
+#endif

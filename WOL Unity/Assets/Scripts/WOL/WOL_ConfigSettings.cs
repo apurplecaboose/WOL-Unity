@@ -3,11 +3,13 @@ using UnityEngine;
 [Serializable]
 public class WOL_ConfigSettings
 {
+#if !PLATFORM_ANDROID
     public bool StartFullscreen = false;
     public Vector2Int DefaultResolution = Vector2Int.zero;
 
     public bool ExecuteWakeOnStart = false;
     public float WakeOnStartDelay = 3f;
+#endif
     public string MAC = "FF:FF:FF:FF:FF:FF";
     public string BroadcastAddress = "255.255.255.255";
     public int BroadcastPort = 9;
